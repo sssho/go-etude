@@ -8,8 +8,10 @@ import (
 	"github.com/rivo/tview"
 )
 
+var tmuxCommand string = FZFCommand()
+
 func runSubprocess() string {
-	cmd := exec.Command("sh", "-c", "pwd | fzf-tmux")
+	cmd := exec.Command("sh", "-c", fmt.Sprintf("pwd | %s", tmuxCommand))
 	out, err := cmd.Output()
 	if err != nil {
 		return ""
@@ -84,7 +86,7 @@ func (f *MyForm) SetFormParam() {
 func (f *MyForm) SetKeyBind() {
 	f.form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		switch event.Key() {
-		case tcell.KeyCtrlN:
+		case tcell.KeyCtrlH:
 			i, _ := f.form.GetFocusedItemIndex()
 			item := f.form.GetFormItem(i)
 			if xi, ok := item.(*tview.InputField); ok {
